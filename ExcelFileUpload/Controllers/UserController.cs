@@ -1,4 +1,5 @@
 ﻿using ExcelFileUpload.Helpers;
+using ExcelFileUpload.Models.User_Model;
 using ExcelFileUpload.Services.Interfaces;
 using ExcelFileUpload.ViewModels.User_ViewModel;
 using Microsoft.AspNetCore.Authentication;
@@ -14,13 +15,13 @@ namespace ExcelFileUpload.Controllers
         private readonly IUserService _userService;
         private readonly ILogger<UserController> _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor, ILogger<UserController> logger, IWebHostEnvironment webHostEnvironment)
+        private readonly IWebHostEnvironment _hostEnvironment;
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor, ILogger<UserController> logger, IWebHostEnvironment hostEnvironment)
         {
             _userService = userService;
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
-            _webHostEnvironment = webHostEnvironment;
+            _hostEnvironment = hostEnvironment;
         }
         public IActionResult Index()
         {
@@ -44,9 +45,11 @@ namespace ExcelFileUpload.Controllers
                     var claims = new List<Claim>{
 
                    new Claim("UserID",user.UserID.ToString()),
+                   new Claim("FirstName",user.FirstName),
                    new Claim("FullName",user.FullName),
                    new Claim("Email",user.Email),
                    new Claim("Password",user.Password),
+                   new Claim("UserImage",user.ImageName),
                    new Claim("RoleID",user.RoleID.ToString()),
                 };
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -77,17 +80,16 @@ namespace ExcelFileUpload.Controllers
             {
                 userView.Password = userView.Password.HashedWithSalt();
                 userView.RoleID = 2;
-                //Save--Image-Starts
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-                string imageFileName = Path.GetFileNameWithoutExtension(userView.ImageFile.FileName);
-                string imageFileExt = Path.GetExtension(userView.ImageFile.FileName);
-                userView.ImageName = imageFileName = imageFileName + "_" + userView.UserID.ToString();
-                string filePath = Path.Combine(wwwRootPath + "/assets/images/users/", imageFileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                string wwwrootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(userView.ImageFile.FileName);
+                string fileExtension = Path.GetExtension(userView.ImageFile.FileName);
+                userView.ImageName = fileName = fileName + "_" + DateTime.UtcNow.AddHours(5).ToString("dd-mm-yyyy") + fileExtension;
+                string path = Path.Combine(wwwrootPath + "/assets/images/users/", fileName);
+                using (var FileStream = new FileStream(path, FileMode.Create))
                 {
-                    await userView.ImageFile.CopyToAsync(fileStream);
+                    await userView.ImageFile.CopyToAsync(FileStream);
                 }
-                //Save--Image-Ends
+
                 await _userService.Add(userView);
                 return RedirectToAction("Index", "User");
             }

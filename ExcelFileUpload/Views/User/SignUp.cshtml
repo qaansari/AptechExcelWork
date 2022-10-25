@@ -1,4 +1,4 @@
-﻿@model ExcelFileUpload.Models.User_Model.User
+﻿@model ExcelFileUpload.ViewModels.User_ViewModel.UserView
 @{
     Layout = null;
 }
@@ -50,7 +50,7 @@
                                 </a>
                             </div>
                             <div class="p-2">
-                                <form class="needs-validation" method="post" action="SignUp">
+                                <form class="needs-validation" method="post" enctype="multipart/form-data" asp-action="SignUp">
                                     <div class="mb-3">
                                         <label for="FirstName" class="form-label">First Name *</label>
                                         <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="Enter First Name" required>
@@ -80,8 +80,8 @@
                                         </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="Password" class="form-label">Upload Photo</label>
-                                        <input type="file" class="form-control" id="ImageFile" name="ImageFile">
+                                        <label for="ImageFile" class="form-label">Upload Photo</label>
+                                        <input type="file" class="form-control" id="ImageFile" name="ImageFile" accept="image/*">
                                         <div class="invalid-feedback">
                                             Please Upload Image
                                         </div>
