@@ -1,4 +1,5 @@
 ﻿using ExcelFileUpload.Models.User_Model;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExcelFileUpload.ViewModels.User_ViewModel
 {

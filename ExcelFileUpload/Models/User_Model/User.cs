@@ -20,8 +20,6 @@ namespace ExcelFileUpload.Models.User_Model
         public int RoleID { get; set; }
         public Role Role { get; set; }
         public string? ImageName { get; set; }
-        [NotMapped]
-        public IFormFile ImageFile { get; set; }
         [ForeignKey("UserID")]
         public int? CreatedByUserID { get; set; }
         public DateTime? CreatedDateTime { get; set; } = DateTime.UtcNow.AddHours(5);
@@ -29,6 +27,8 @@ namespace ExcelFileUpload.Models.User_Model
         public int? UpdatedByUserID { get; set; }
         public DateTime? UpdatedDateTime { get; set; } = DateTime.UtcNow.AddHours(5);
         public User CreatedByUser { get; set; }
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
 
     }
 }

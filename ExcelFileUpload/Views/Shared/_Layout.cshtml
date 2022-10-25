@@ -1,4 +1,8 @@
 ﻿@inject IHttpContextAccessor _context
+@{
+    var UserImage = _context.HttpContext.User.FindFirst("UserImage").Value;
+    var UserName = _context.HttpContext.User.FindFirst("FirstName").Value;
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,9 +58,9 @@
                     <div class="dropdown d-inline-block">
                         <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg"
-                                 alt="Header Avatar">
-                            <span class="d-none d-xl-inline-block ms-1" key="t-henry">@_context.HttpContext.User.FindFirst("FullName").Value</span>
+                            <img class="rounded-circle header-profile-user" src="@("/assets/images/users/"+UserImage)"
+                                 alt="Header Avatar"/>
+                            <span class="d-none d-xl-inline-block ms-1" key="t-henry">@UserName</span>
                             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">
@@ -82,11 +86,29 @@
                     <ul class="metismenu list-unstyled" id="side-menu">
                         <li>
                             <a href="javascript:void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-home-circle"></i>
+                                <i class="fa fa-home"></i>
                                 <span key="t-dashboards">Dashboards</span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
-                              <li><a href="/">Student Dashboard</a></li>
+                                <li><a href="@Url.Action("Index","Home")">
+                                <i class="fa fa-cog"></i>
+                                <span key="t-dashboards">Student Dashboard</span>
+                            </a></li>
+                            
+
+                            </ul>
+                        </li>
+                          <li>
+                            <a href="javascript:void(0);" class="has-arrow waves-effect">
+                                <i class="fa fa-cog"></i>
+                                <span key="t-dashboards">Settings</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("ChangePassword","User")">
+                                <i class="fa fa-pen"></i>
+                                <span key="t-dashboards">Change Password</span>
+                            </a></li>
+                            
 
                             </ul>
                         </li>
