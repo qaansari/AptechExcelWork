@@ -8,5 +8,9 @@ namespace ExcelFileUpload.Controllers
         {
             return View();
         }
+        public IActionResult Upload()
+        {
+            return View();
+        }
     }
 }
