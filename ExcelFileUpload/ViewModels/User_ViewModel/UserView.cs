@@ -19,11 +19,11 @@ namespace ExcelFileUpload.ViewModels.User_ViewModel
         public int RoleID { get; set; }
         public RoleView Role { get; set; }
         public string? ImageName { get; set; }
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
         public int? CreatedByUserID { get; set; }
-        public DateTime? CreatedDateTime { get; set; } = DateTime.UtcNow.AddHours(5);
+        public DateTime? CreatedDateTime { get; set; }
         public int? UpdatedByUserID { get; set; }
-        public DateTime? UpdatedDateTime { get; set; } = DateTime.UtcNow.AddHours(5);
+        public DateTime? UpdatedDateTime { get; set; }
         public User CreatedByUser { get; set; }
         public User UpdatedByUser { get; set; }
     }

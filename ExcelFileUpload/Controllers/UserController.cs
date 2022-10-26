@@ -4,6 +4,7 @@ using ExcelFileUpload.Services.Interfaces;
 using ExcelFileUpload.ViewModels.User_ViewModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -34,11 +35,11 @@ namespace ExcelFileUpload.Controllers
             {
                 if (string.IsNullOrEmpty(userView.Email) || string.IsNullOrEmpty(userView.Password))
                 {
-                    TempData["ErrorMessage"] = "Incorrect Email or Password";
+                    TempData["ErrorMessage"] = "Please Provide Valid Credentials";
                     return View(userView);
                 }
                 var hashedPassword = userView.Password.HashedWithSalt().Trim();
-                
+
                 var user = await _userService.Login(userView.Email.Trim(), hashedPassword);
                 if (user != null)
                 {
@@ -48,14 +49,13 @@ namespace ExcelFileUpload.Controllers
                    new Claim("FirstName",user.FirstName),
                    new Claim("FullName",user.FullName),
                    new Claim("Email",user.Email),
-                   new Claim("Password",user.Password),
                    new Claim("UserImage",user.ImageName),
                    new Claim("RoleID",user.RoleID.ToString()),
                 };
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                     var state = new AuthenticationState(claimsPrincipal);
-                    await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -80,16 +80,28 @@ namespace ExcelFileUpload.Controllers
             {
                 userView.Password = userView.Password.HashedWithSalt();
                 userView.RoleID = 2;
-                string wwwrootPath = _hostEnvironment.WebRootPath;
-                string fileName = Path.GetFileNameWithoutExtension(userView.ImageFile.FileName);
-                string fileExtension = Path.GetExtension(userView.ImageFile.FileName);
-                userView.ImageName = fileName = fileName + "_" + DateTime.UtcNow.AddHours(5).ToString("dd-mm-yyyy") + fileExtension;
-                string path = Path.Combine(wwwrootPath + "/assets/images/users/", fileName);
-                using (var FileStream = new FileStream(path, FileMode.Create))
+                if (userView.ImageFile != null)
                 {
-                    await userView.ImageFile.CopyToAsync(FileStream);
+                    string wwwrootPath = _hostEnvironment.WebRootPath;
+                    string fileName = Path.GetFileNameWithoutExtension(userView.ImageFile.FileName);
+                    string fileExtension = Path.GetExtension(userView.ImageFile.FileName);
+                    userView.ImageName = fileName = fileName + "_" + DateTime.UtcNow.AddHours(5).ToString("dd-MM-yyyy") + fileExtension;
+                    string path = Path.Combine(wwwrootPath + "/assets/images/users/", fileName);
+                    using (var FileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await userView.ImageFile.CopyToAsync(FileStream);
+                    }
                 }
-
+                else
+                {
+                    string wwwrootPath = _hostEnvironment.WebRootPath;
+                    userView.ImageName = "user-default.png";
+                    string path = Path.Combine(wwwrootPath + "/assets/images/users/", userView.ImageName);
+                    using (var FileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await userView.ImageFile.CopyToAsync(FileStream);
+                    }
+                }
                 await _userService.Add(userView);
                 return RedirectToAction("Index", "User");
             }

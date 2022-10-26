@@ -16,19 +16,23 @@ namespace ExcelFileUpload.Models.User_Model
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public string Password { get; set; }
+        public string? ImageName { get; set; }
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
         public bool IsActive { get; set; }
         public int RoleID { get; set; }
         public Role Role { get; set; }
-        public string? ImageName { get; set; }
         [ForeignKey("UserID")]
         public int? CreatedByUserID { get; set; }
-        public DateTime? CreatedDateTime { get; set; } = DateTime.UtcNow.AddHours(5);
+        public DateTime? CreatedDateTime { get; set; }
         [ForeignKey("UserID")]
         public int? UpdatedByUserID { get; set; }
-        public DateTime? UpdatedDateTime { get; set; } = DateTime.UtcNow.AddHours(5);
+        public DateTime? UpdatedDateTime { get; set; }
         public User CreatedByUser { get; set; }
-        [NotMapped]
-        public IFormFile ImageFile { get; set; }
+        [InverseProperty("CreatedByUser")]
+        public ICollection<ExcelFiles> ExcelFilesCreated { get; set; }
+        [InverseProperty("UpdatedByUser")]
+        public ICollection<ExcelFiles> ExcelFilesUpdated { get; set; }
 
     }
 }

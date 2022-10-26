@@ -3,9 +3,10 @@ using System.Text;
 
 namespace ExcelFileUpload.Helpers
 {
+    
     public static class Helper
     {
-        public static string HashedWithSalt(this string password) {
+            public static string HashedWithSalt(this string password) {
             var salt = "CHYzqe4plTMekNC88U^^1Q++";
             byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
             string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(

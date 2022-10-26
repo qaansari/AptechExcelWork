@@ -22,6 +22,42 @@ namespace ExcelFileUpload.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("ExcelFileUpload.Models.ExcelFiles", b =>
+                {
+                    b.Property<int>("ExcelFileID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExcelFileID"), 1L, 1);
+
+                    b.Property<int>("CreatedByUserID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ExcelFileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("UpdatedByUserID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ExcelFileID");
+
+                    b.HasIndex("CreatedByUserID");
+
+                    b.HasIndex("UpdatedByUserID");
+
+                    b.ToTable("ExcelFiles");
+                });
+
             modelBuilder.Entity("ExcelFileUpload.Models.User_Model.Role", b =>
                 {
                     b.Property<int>("RoleID")
@@ -36,13 +72,18 @@ namespace ExcelFileUpload.Migrations
 
                     b.HasKey("RoleID");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
                         {
                             RoleID = 1,
                             Title = "Super Admin"
+                        },
+                        new
+                        {
+                            RoleID = 2,
+                            Title = "Sub Admin"
                         });
                 });
 
@@ -103,15 +144,42 @@ namespace ExcelFileUpload.Migrations
                         new
                         {
                             UserID = 1,
-                            CreatedDateTime = new DateTime(2022, 10, 25, 17, 26, 11, 867, DateTimeKind.Utc).AddTicks(5508),
-                            Email = "super_admin@share.com",
+                            Email = "super_admin@stoke.com",
                             FirstName = "Super",
+                            ImageName = "user-default.png",
                             IsActive = true,
                             LastName = "Admin",
                             Password = "s8scmb168Cftrf3LG8cFMjQRHk8LXGSAC9iYfOIBymK3f1Jx/wY6Tpt7jccy2MWd17vta8mAcP74Eg+BFzOQew==",
-                            RoleID = 1,
-                            UpdatedDateTime = new DateTime(2022, 10, 25, 17, 26, 11, 867, DateTimeKind.Utc).AddTicks(5520)
+                            RoleID = 1
+                        },
+                        new
+                        {
+                            UserID = 2,
+                            Email = "sub_admin@stoke.com",
+                            FirstName = "Sub",
+                            ImageName = "user-default.png",
+                            IsActive = true,
+                            LastName = "Admin",
+                            Password = "s8scmb168Cftrf3LG8cFMjQRHk8LXGSAC9iYfOIBymK3f1Jx/wY6Tpt7jccy2MWd17vta8mAcP74Eg+BFzOQew==",
+                            RoleID = 2
                         });
+                });
+
+            modelBuilder.Entity("ExcelFileUpload.Models.ExcelFiles", b =>
+                {
+                    b.HasOne("ExcelFileUpload.Models.User_Model.User", "CreatedByUser")
+                        .WithMany("ExcelFilesCreated")
+                        .HasForeignKey("CreatedByUserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ExcelFileUpload.Models.User_Model.User", "UpdatedByUser")
+                        .WithMany("ExcelFilesUpdated")
+                        .HasForeignKey("UpdatedByUserID");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("UpdatedByUser");
                 });
 
             modelBuilder.Entity("ExcelFileUpload.Models.User_Model.User", b =>
@@ -134,6 +202,13 @@ namespace ExcelFileUpload.Migrations
             modelBuilder.Entity("ExcelFileUpload.Models.User_Model.Role", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ExcelFileUpload.Models.User_Model.User", b =>
+                {
+                    b.Navigation("ExcelFilesCreated");
+
+                    b.Navigation("ExcelFilesUpdated");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ExcelFileUpload.Migrations
 {
-    public partial class DbInint : Migration
+    public partial class Dbinit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Role",
+                name: "Roles",
                 columns: table => new
                 {
                     RoleID = table.Column<int>(type: "int", nullable: false)
@@ -19,7 +19,7 @@ namespace ExcelFileUpload.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.RoleID);
+                    table.PrimaryKey("PK_Roles", x => x.RoleID);
                 });
 
             migrationBuilder.CreateTable(
@@ -32,9 +32,9 @@ namespace ExcelFileUpload.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     RoleID = table.Column<int>(type: "int", nullable: false),
-                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedByUserID = table.Column<int>(type: "int", nullable: true),
                     CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedByUserID = table.Column<int>(type: "int", nullable: true),
@@ -44,9 +44,9 @@ namespace ExcelFileUpload.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.UserID);
                     table.ForeignKey(
-                        name: "FK_Users_Role_RoleID",
+                        name: "FK_Users_Roles_RoleID",
                         column: x => x.RoleID,
-                        principalTable: "Role",
+                        principalTable: "Roles",
                         principalColumn: "RoleID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -56,15 +56,64 @@ namespace ExcelFileUpload.Migrations
                         principalColumn: "UserID");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ExcelFiles",
+                columns: table => new
+                {
+                    ExcelFileID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ExcelFileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedByUserID = table.Column<int>(type: "int", nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedByUserID = table.Column<int>(type: "int", nullable: true),
+                    UpdatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExcelFiles", x => x.ExcelFileID);
+                    table.ForeignKey(
+                        name: "FK_ExcelFiles_Users_CreatedByUserID",
+                        column: x => x.CreatedByUserID,
+                        principalTable: "Users",
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ExcelFiles_Users_UpdatedByUserID",
+                        column: x => x.UpdatedByUserID,
+                        principalTable: "Users",
+                        principalColumn: "UserID");
+                });
+
             migrationBuilder.InsertData(
-                table: "Role",
+                table: "Roles",
                 columns: new[] { "RoleID", "Title" },
                 values: new object[] { 1, "Super Admin" });
 
             migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "RoleID", "Title" },
+                values: new object[] { 2, "Sub Admin" });
+
+            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserID", "CreatedByUserID", "CreatedDateTime", "Email", "FirstName", "ImageName", "IsActive", "LastName", "Password", "RoleID", "UpdatedByUserID", "UpdatedDateTime" },
-                values: new object[] { 1, null, new DateTime(2022, 10, 25, 17, 26, 11, 867, DateTimeKind.Utc).AddTicks(5508), "super_admin@share.com", "Super", null, true, "Admin", "s8scmb168Cftrf3LG8cFMjQRHk8LXGSAC9iYfOIBymK3f1Jx/wY6Tpt7jccy2MWd17vta8mAcP74Eg+BFzOQew==", 1, null, new DateTime(2022, 10, 25, 17, 26, 11, 867, DateTimeKind.Utc).AddTicks(5520) });
+                values: new object[] { 1, null, null, "super_admin@stoke.com", "Super", "user-default.png", true, "Admin", "s8scmb168Cftrf3LG8cFMjQRHk8LXGSAC9iYfOIBymK3f1Jx/wY6Tpt7jccy2MWd17vta8mAcP74Eg+BFzOQew==", 1, null, null });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserID", "CreatedByUserID", "CreatedDateTime", "Email", "FirstName", "ImageName", "IsActive", "LastName", "Password", "RoleID", "UpdatedByUserID", "UpdatedDateTime" },
+                values: new object[] { 2, null, null, "sub_admin@stoke.com", "Sub", "user-default.png", true, "Admin", "s8scmb168Cftrf3LG8cFMjQRHk8LXGSAC9iYfOIBymK3f1Jx/wY6Tpt7jccy2MWd17vta8mAcP74Eg+BFzOQew==", 2, null, null });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExcelFiles_CreatedByUserID",
+                table: "ExcelFiles",
+                column: "CreatedByUserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExcelFiles_UpdatedByUserID",
+                table: "ExcelFiles",
+                column: "UpdatedByUserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_CreatedByUserID",
@@ -80,10 +129,13 @@ namespace ExcelFileUpload.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ExcelFiles");
+
+            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "Roles");
         }
     }
 }
