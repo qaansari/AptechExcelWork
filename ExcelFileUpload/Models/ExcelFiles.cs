@@ -9,7 +9,6 @@ namespace ExcelFileUpload.Models
         [Key]
         public int ExcelFileID { get; set; }
         public string ExcelFileName { get; set; }
-        [NotMapped]
-        public IFormFile ExcelFile { get; set; }
+        public string ExcelFile { get; set; }
     }
 }

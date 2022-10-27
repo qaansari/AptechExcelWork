@@ -10,9 +10,9 @@
                 </p>
 
                 <div>
-                    <form action="#" class="dropzone">
+                    <form asp-action="uploadFile" class="dropzone" enctype="multipart/form-data">
                         <div class="fallback">
-                            <input type="file" class="form-control" id="ExcelFile" name="ExcelFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                            <input type="file" class="form-control" id="excelFile" name="excelFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                         </div>
                         <div class="dz-message needsclick text-center mt-3 mb-0">
                             <div class="mb-3">
@@ -21,12 +21,13 @@
 
                             <h4>Drop files here or click to upload.</h4>
                         </div>
-                    </form>
+                        <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary waves-effect waves-light"><i class="fa fa-arrow-up"></i>&nbsp;&nbsp;Upload File</button>
+                </div>
+                 </form>
                 </div>
 
-                <div class="text-center mt-4">
-                    <button type="button" class="btn btn-primary waves-effect waves-light"><i class="fa fa-arrow-up"></i>&nbsp;&nbsp;Upload File</button>
-                </div>
+                
             </div>
         </div>
     </div> <!-- end col -->
@@ -43,9 +44,14 @@
                                 <th class="align-middle">Student ID</th>
                                 <th class="align-middle">Student Name</th>
                                 <th class="align-middle">Batch Code</th>
+                                <th class="align-middle">Faculty</th>
                                 <th class="align-middle">Day Slot</th>
                                 <th class="align-middle">Time Slot</th>
-                                <th class="align-middle">Faculty</th>
+                                <th class="align-middle">Mobile #</th>
+                                <th class="align-middle">WhatsApp #</th>
+                                <th class="align-middle">Email</th>
+                                <th class="align-middle">Semester</th>
+                                <th class="align-middle">Book</th>
                                 <th class="align-middle">Lab</th>
                             </tr>
                         </thead>
