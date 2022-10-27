@@ -1,5 +1,6 @@
 ﻿@inject IHttpContextAccessor _context
 @{
+    var RoleID = Convert.ToInt32(_context.HttpContext.User.FindFirst("RoleID").Value);
     var UserImage = _context.HttpContext.User.FindFirst("UserImage").Value;
     var UserName = _context.HttpContext.User.FindFirst("FullName").Value;
 }
@@ -74,7 +75,6 @@
                 </div>
             </div>
         </header>
-
         <!-- ========== Left Sidebar Start ========== -->
         <div class="vertical-menu">
 

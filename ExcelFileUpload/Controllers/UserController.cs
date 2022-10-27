@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 
 namespace ExcelFileUpload.Controllers
@@ -14,6 +15,7 @@ namespace ExcelFileUpload.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
         private readonly ILogger<UserController> _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IWebHostEnvironment _hostEnvironment;
@@ -116,5 +118,6 @@ namespace ExcelFileUpload.Controllers
             await _httpContextAccessor.HttpContext.SignOutAsync();
             return RedirectToAction("Index");
         }
+        
     }
 }

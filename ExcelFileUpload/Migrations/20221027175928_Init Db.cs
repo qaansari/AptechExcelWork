@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ExcelFileUpload.Migrations
 {
-    public partial class Dbinit : Migration
+    public partial class InitDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,8 @@ namespace ExcelFileUpload.Migrations
                 {
                     RoleID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,13 +88,13 @@ namespace ExcelFileUpload.Migrations
 
             migrationBuilder.InsertData(
                 table: "Roles",
-                columns: new[] { "RoleID", "Title" },
-                values: new object[] { 1, "Super Admin" });
+                columns: new[] { "RoleID", "IsActive", "Title" },
+                values: new object[] { 1, false, "Super Admin" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
-                columns: new[] { "RoleID", "Title" },
-                values: new object[] { 2, "Sub Admin" });
+                columns: new[] { "RoleID", "IsActive", "Title" },
+                values: new object[] { 2, false, "Sub Admin" });
 
             migrationBuilder.InsertData(
                 table: "Users",

@@ -19,12 +19,14 @@ namespace ExcelFileUpload.AppDbContext
             modelBuilder.Entity<Role>().HasData(new Role
             {
                 RoleID = 1,
-                Title = "Super Admin"
+                Title = "Super Admin",
+                IsActive=true
             },
             new Role
             {
                 RoleID = 2,
-                Title="Sub Admin"
+                Title="Sub Admin",
+                IsActive = true
             });
             
             modelBuilder.Entity<User>().HasData(new User

@@ -11,9 +11,6 @@ namespace ExcelFileUpload.Controllers
             _httpContextAccessor = httpContextAccessor;
             UserID = Convert.ToInt32(_httpContextAccessor.HttpContext.User.FindFirst("UserID").Value);
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+        
     }
 }

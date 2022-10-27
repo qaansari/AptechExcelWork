@@ -66,7 +66,7 @@ namespace ExcelFileUpload.Services
         {
             try
             {
-                var users = _context.Users.Where(x => x.IsActive == true).AsNoTracking().ToList();
+                var users = _context.Users.Where(x => x.IsActive == true).Include(x=>x.Role).AsNoTracking().ToList();
                 return _mapper.Map<List<User>, List<UserView>>(users);
             }
             catch (Exception e)

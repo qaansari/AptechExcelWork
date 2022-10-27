@@ -66,6 +66,9 @@ namespace ExcelFileUpload.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleID"), 1L, 1);
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -78,11 +81,13 @@ namespace ExcelFileUpload.Migrations
                         new
                         {
                             RoleID = 1,
+                            IsActive = false,
                             Title = "Super Admin"
                         },
                         new
                         {
                             RoleID = 2,
+                            IsActive = false,
                             Title = "Sub Admin"
                         });
                 });
