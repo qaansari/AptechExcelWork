@@ -1,0 +1,26 @@
+﻿@using System.Data
+@model DataTable
+
+<table cellpadding="0" cellspacing="0">
+    <thead>
+
+    <tr>
+            @for (int i=0;i<Model.Columns.Count;i++)
+            {
+                <th>
+                    @Model.Columns[i].ColumnName
+                </th>
+            }
+    </tr>
+
+    </thead>
+
+        @* @foreach (DataRow row in Model.[0].Rows)
+    {
+    <tr>
+    <td>@row["CustomerId"]</td>
+    <td>@row["Name"]</td>
+    <td>@row["Country"]</td>
+    </tr>
+    }*@
+    </table>

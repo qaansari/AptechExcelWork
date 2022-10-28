@@ -15,10 +15,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\ExcelFiles\" />
+    <PackageReference Include="System.Data.OleDb" Version="6.0.0" />
   </ItemGroup>
 
 </Project>
