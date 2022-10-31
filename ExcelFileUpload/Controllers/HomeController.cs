@@ -10,6 +10,7 @@ namespace ExcelFileUpload.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IConfiguration _configuration;
         private readonly int UserID;
+
         public HomeController(IHttpContextAccessor httpContextAccessor, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -50,7 +51,7 @@ namespace ExcelFileUpload.Controllers
                 {
                     excelFile.CopyTo(stream);
                 }
-                var dt = readData("");
+                var dt = readData(filePath);
                 return RenderedExcel(dt);
             }
             else
@@ -61,10 +62,9 @@ namespace ExcelFileUpload.Controllers
             
         }
 
-        public DataTable readData(string Path)
+        public DataTable readData(string FilePath)
         {
-            Path = "C:\\Users\\User\\source\\repos\\AptechExcelWork\\ExcelFileUpload\\wwwroot\\ExcelFiles\\31102022202519\\AptStdRecord.xlsx";
-            string excelCS = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties='Excel 8.0;HDR=Yes'", Path);
+            string excelCS = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties='Excel 8.0;HDR=Yes'", FilePath);
             OleDbConnection con = new OleDbConnection(excelCS);
             OleDbDataAdapter da = new OleDbDataAdapter("SELECT * from [Sheet1$]", con);
             DataTable dt = new DataTable();
