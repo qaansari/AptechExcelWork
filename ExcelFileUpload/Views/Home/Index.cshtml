@@ -4,13 +4,11 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-
                 <h4 class="card-title">Stoke</h4>
                 <p class="card-title-desc">
                     Stoke is an an online web application
                     that takes excel files as an input and display their contents as a list
                 </p>
-
                 <div>
                     <form asp-action="uploadFile" class="dropzone" enctype="multipart/form-data">
                         <div class="fallback">
@@ -28,8 +26,10 @@
                         </div>
                     </form>
                 </div>
-
-
+                @if (TempData["Message"] != null)
+                {
+                    <div><p>@TempData["Message"]</p></div>
+                }
             </div>
         </div>
     </div> <!-- end col -->
@@ -40,7 +40,7 @@
             <div class="card-body">
                 @if (Model != null)
                 {
-                    <h4 class="card-title mb-4">Student Information</h4>
+                    <h4 class="card-title mb-4">@ViewBag.SheetName</h4>
                     <div class="table-responsive">
                         <table class="table display align-middle table-nowrap mb-0" id="excel_table">
                             <thead class="table-light">
@@ -52,7 +52,7 @@
                                         {
 
                                             <th>
-                                                @Model.Columns[i].ColumnName;
+                                                @Model.Columns[i].ColumnName.Replace('_',' ')
                                             </th>
 
                                         }
@@ -62,22 +62,14 @@
                             <tbody>
                                 @if (Model?.Rows?.Count > 0)
                                 {
-
                                     @for (int i = 1; i < Model.Rows.Count; i++)
                                     {
-
                                         <tr>
-                                            <td>@Model.Rows[i][1]</td>
-                                            <td>@Model.Rows[i][2]</td>
-                                            <td>@Model.Rows[i][3]</td>
-                                            <td>@Model.Rows[i][4]</td>
-                                            <td>@Model.Rows[i][5]</td>
-                                            <td>@Model.Rows[i][6]</td>
-                                            <td>@Model.Rows[i][7]</td>
-                                            <td>@Model.Rows[i][8]</td>
-                                            <td>@Model.Rows[i][9]</td>
-                                            <td>@Model.Rows[i][10]</td>
-                                            <td>@Model.Rows[i][11]</td>
+                                            @for (int j = 1; j < Model.Columns.Count; j++)
+                                            {
+
+                                                <td>@Model.Rows[i][j]</td>
+                                            }
                                         </tr>
                                     }
                                 }

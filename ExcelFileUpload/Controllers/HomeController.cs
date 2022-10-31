@@ -59,18 +59,40 @@ namespace ExcelFileUpload.Controllers
                 TempData["Message"] = "Please Select a File First";
             }
             return RedirectToAction("Index");
-            
+
         }
 
         public DataTable readData(string FilePath)
         {
             string excelCS = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties='Excel 8.0;HDR=Yes'", FilePath);
             OleDbConnection con = new OleDbConnection(excelCS);
-            OleDbDataAdapter da = new OleDbDataAdapter("SELECT * from [Sheet1$]", con);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-
-            return dt;
+            con.Open();
+            List<string> sheets = new List<string>();
+            DataTable dt1 = con.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+            foreach (DataRow drSheet in dt1.Rows)
+            {
+                if (drSheet["TABLE_NAME"].ToString().Contains("$"))
+                {
+                    string s = drSheet["TABLE_NAME"].ToString();
+                    sheets.Add(s.StartsWith("'") ? s.Substring(1, s.Length - 3) : s.Substring(0, s.Length - 1));
+                    break;
+                }
+            }
+            if (sheets != null || sheets.Count > 0)
+            {
+                OleDbDataAdapter da = new OleDbDataAdapter($"SELECT * from [{sheets[0]}$]", con);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                con.Close();
+                ViewBag.SheetName = sheets[0];
+                return dt;
+            }
+            else
+            {
+                return null;
+            }
+           
         }
     }
 }
+
