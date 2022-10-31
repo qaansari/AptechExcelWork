@@ -38,10 +38,11 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                @if(Model!=null){
-                <h4 class="card-title mb-4">Student Information</h4>
-                <div class="table-responsive">
-                 <table class="table display align-middle table-nowrap mb-0" id="excel_table">
+                @if (Model != null)
+                {
+                    <h4 class="card-title mb-4">Student Information</h4>
+                    <div class="table-responsive">
+                        <table class="table display align-middle table-nowrap mb-0" id="excel_table">
                             <thead class="table-light">
 
                                 @if (Model?.Columns?.Count > 0)
@@ -87,7 +88,7 @@
                 else
                 {
                     <div class="d-flex justify-content-center">
-                    <img src="/assets/images/No data-amico.png" alt="No Data" style="width:400px;height:400px;"/>
+                        <img src="/assets/images/No data-amico.png" alt="No Data" style="width:400px;height:400px;" />
                     </div>
                 }
                 <!-- end table-responsive -->
