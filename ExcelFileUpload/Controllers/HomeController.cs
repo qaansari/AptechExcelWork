@@ -50,22 +50,26 @@ namespace ExcelFileUpload.Controllers
                 {
                     excelFile.CopyTo(stream);
                 }
-                //Read the Connection String for the excel file
+                var dt = readData("");
+                return RenderedExcel(dt);
             }
-            var dt = readData("");
-            return RenderedExcel(dt);
-            //return RedirectToAction("Index");
+            else
+            {
+                TempData["Message"] = "Please Select a File First";
+            }
+            return RedirectToAction("Index");
+            
         }
 
-        public DataTable readData(string path)
+        public DataTable readData(string filePath)
         {
-            path = "C:\\Users\\User\\source\\repos\\AptechExcelWork\\ExcelFileUpload\\wwwroot\\ExcelFiles\\29102022000529\\AptStdRecord.xlsx";
-            string excelCS = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties='Excel 8.0;HDR=Yes'", path);
+            filePath = "C:\\Users\\User\\source\\repos\\AptechExcelWork\\ExcelFileUpload\\wwwroot\\ExcelFiles\\31102022162320\\AptStdRecord.xlsx";
+            string excelCS = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties='Excel 8.0;HDR=Yes'", filePath);
             OleDbConnection con = new OleDbConnection(excelCS);
             OleDbDataAdapter da = new OleDbDataAdapter("SELECT * from [Sheet1$]", con);
             DataTable dt = new DataTable();
             da.Fill(dt);
-            
+
             return dt;
         }
     }
