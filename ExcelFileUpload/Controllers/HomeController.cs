@@ -61,10 +61,10 @@ namespace ExcelFileUpload.Controllers
             
         }
 
-        public DataTable readData(string filePath)
+        public DataTable readData(string Path)
         {
-            filePath = "C:\\Users\\User\\source\\repos\\AptechExcelWork\\ExcelFileUpload\\wwwroot\\ExcelFiles\\31102022162320\\AptStdRecord.xlsx";
-            string excelCS = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties='Excel 8.0;HDR=Yes'", filePath);
+            Path = "C:\\Users\\User\\source\\repos\\AptechExcelWork\\ExcelFileUpload\\wwwroot\\ExcelFiles\\31102022162320\\AptStdRecord.xlsx";
+            string excelCS = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties='Excel 8.0;HDR=Yes'", Path);
             OleDbConnection con = new OleDbConnection(excelCS);
             OleDbDataAdapter da = new OleDbDataAdapter("SELECT * from [Sheet1$]", con);
             DataTable dt = new DataTable();
