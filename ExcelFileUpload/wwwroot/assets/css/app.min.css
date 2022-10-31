@@ -5466,4 +5466,9 @@ div.dataTables_wrapper div.dataTables_filter input {
     .jobs-categories a:hover {
         color: #556ee6;
     }
+
+    select{
+        padding:5px;
+    }
+
 /*# sourceMappingURL=app.min.css.map */
